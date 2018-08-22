@@ -43,7 +43,6 @@ function chooseCategory() {
                 connection.query("SELECT * FROM products WHERE product_name = '" + selection.whatItem + "'", function (err, results) {
                     if (err) throw err;
                     var chosenItem = results[0];
-                    console.table(results);
                     console.log(results[0].product_name + " are " + results[0].price + " each");
                     inquirer.prompt([
                         {
