@@ -85,7 +85,7 @@ function addStock() {
                 message: "How many would you like to add?"
             }
         ]).then(function (addition) {
-            connection.query("SELECT * FROM puroducts WHERE product_name = '" + addition.addWhat + "'", function (err, results) {
+            connection.query("SELECT * FROM products WHERE product_name = '" + addition.addWhat + "'", function (err, results) {
                 if (err) throw err;
                 if (parseInt(addition.addHowMany) > 0) {
                     var newStock = (parseInt(addition.addHowMany) + parseInt(results[0].stock_quantity));

@@ -51,15 +51,19 @@ function chooseCategory() {
                             message: "How many would you like to purchase?"
                         }
                     ]).then(function (purchase) {
-                        connection.query("SELECT item_id, product_name, price, stock_quantity FROM products WHERE product_name = '" + chosenItem.product_name + "'", function (err, results) {
+                        connection.query("SELECT item_id, product_name, price, stock_quantity, product_sales FROM products WHERE product_name = '" + chosenItem.product_name + "'", function (err, results) {
                             if (err) throw err;
                             if (parseInt(purchase.howMany) <= parseInt(results[0].stock_quantity)) {
                                 var remainingStock = (parseInt(results[0].stock_quantity) - parseInt(purchase.howMany));
                                 var yourTotal = (parseInt(purchase.howMany) * parseFloat(results[0].price));
-                                connection.query("UPDATE products SET ? WHERE ?",
+                                var profit = (parseFloat(results[0].product_sales) + parseFloat(yourTotal));
+                                connection.query("UPDATE products SET ?, ? WHERE ?",
                                     [
                                         {
                                             stock_quantity: remainingStock
+                                        },
+                                        {
+                                            product_sales: parseFloat(profit)
                                         },
                                         {
                                             item_id: chosenItem.item_id
